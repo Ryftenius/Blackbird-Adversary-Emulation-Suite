@@ -119,6 +119,30 @@
       }
     },
     {
+      "id": "process_scope_pivot_chain",
+      "kind": "detection",
+      "source": {
+        "type": "binary",
+        "path": "x64/Release/bb_det_process_scope_pivot_chain.exe"
+      },
+      "launch": {
+        "scanSeconds": 30,
+        "enableKernelHooks": true
+      },
+      "expected": {
+        "required": [
+          "REMOTE_THREAD_START_IN_NON_IMAGE_EXECUTABLE_REGION",
+          "KERNEL_PROCESS_CREATE_ACTIVITY"
+        ],
+        "optional": [
+          "INJECTION_CHAIN_PARTIAL",
+          "INJECTION_CHAIN_COMPLETE",
+          "REMOTE_THREAD_WITH_RECENT_HANDLE_INTENT",
+          "SUSPICIOUS_RWX_ALLOCATION"
+        ]
+      }
+    },
+    {
       "id": "wow64_injection_chain",
       "kind": "detection",
       "source": {
@@ -436,6 +460,27 @@
         "optional": [
           "USERMODE_MODULE_LOAD",
           "SUSPICIOUS_DLL_LOAD_PATH"
+        ]
+      }
+    },
+    {
+      "id": "setwinevent_hook",
+      "kind": "detection",
+      "source": {
+        "type": "binary",
+        "path": "x64/Release/bb_det_setwinevent_hook.exe"
+      },
+      "launch": {
+        "sidecars": [
+          "x64/Release/bb_unsigned_plugin.dll"
+        ]
+      },
+      "expected": {
+        "required": [
+          "USERMODE_WINEVENT_HOOK_INSTALL"
+        ],
+        "optional": [
+          "USERMODE_MODULE_LOAD"
         ]
       }
     },

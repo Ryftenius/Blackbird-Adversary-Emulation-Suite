@@ -14,6 +14,8 @@ int wmain(int argc, wchar_t **argv) {
   return RunNtStubIntegrityCheck();
 #elif defined(BKAES_SAMPLE_INJECTION_CHAIN_COMPLETE)
   return RunInjectionChainComplete();
+#elif defined(BKAES_SAMPLE_PROCESS_SCOPE_PIVOT_CHAIN)
+  return RunProcessScopePivotChain(argc, argv);
 #elif defined(BKAES_SAMPLE_PE_INJECTION_WRITE)
   return RunPeInjectionWrite();
 #elif defined(BKAES_SAMPLE_SECTION_MAP_EXECUTE)
@@ -29,7 +31,11 @@ int wmain(int argc, wchar_t **argv) {
 #elif defined(BKAES_SAMPLE_LOADLIBRARY_REMOTE_THREAD)
   return RunLoadLibraryRemoteThread();
 #elif defined(BKAES_SAMPLE_SETWINDOWS_HOOKEX)
-  return RunSetWindowsHookEx();
+  return RunSetWindowsHookEx(argc, argv);
+#elif defined(BKAES_SAMPLE_SETWINEVENT_HOOK)
+  return RunSetWinEventHook(argc, argv);
+#elif defined(BKAES_SAMPLE_GUI_HOOK_TARGET)
+  return RunGuiHookTarget(argc, argv);
 #elif defined(BKAES_SAMPLE_DIRECT_SYSCALL_INJECTION_CHAIN)
   return RunDirectSyscallInjectionChain();
 #elif defined(BKAES_SAMPLE_WOW64_INJECTION_CHAIN)

@@ -220,7 +220,8 @@ function Build-Dll {
         throw "cl.exe failed for $OutputName"
     }
 
-    $linkArgs = @("/nologo", "/DLL", "/GUARD:NO", "/OUT:$outPath", "/IMPLIB:$importLib", $objectPath, "advapi32.lib")
+    $linkArgs = @("/nologo", "/DLL", "/GUARD:NO", "/OUT:$outPath", "/IMPLIB:$importLib", $objectPath,
+        "advapi32.lib", "user32.lib")
     & link.exe @linkArgs
     if ($LASTEXITCODE -ne 0) {
         throw "link.exe failed for $OutputName"
@@ -410,6 +411,7 @@ $sampleBuilds = @(
     @{ Category = "syscall"; Name = "bb_det_anti_debug_vm_queries"; Define = "BKAES_SAMPLE_ANTI_DEBUG_VM_QUERIES" },
     @{ Category = "syscall"; Name = "bb_fuzz_ntapi_queries"; Define = "BKAES_SAMPLE_FUZZ_NTAPI_QUERIES" },
     @{ Category = "injection"; Name = "bb_det_injection_chain_complete"; Define = "BKAES_SAMPLE_INJECTION_CHAIN_COMPLETE" },
+    @{ Category = "injection"; Name = "bb_det_process_scope_pivot_chain"; Define = "BKAES_SAMPLE_PROCESS_SCOPE_PIVOT_CHAIN" },
     @{ Category = "injection"; Name = "bb_det_pe_injection_write"; Define = "BKAES_SAMPLE_PE_INJECTION_WRITE" },
     @{ Category = "injection"; Name = "bb_det_section_map_execute"; Define = "BKAES_SAMPLE_SECTION_MAP_EXECUTE" },
     @{ Category = "injection"; Name = "bb_det_remote_apc_loadlibrary"; Define = "BKAES_SAMPLE_REMOTE_APC_LOADLIBRARY" },
@@ -420,6 +422,8 @@ $sampleBuilds = @(
     @{ Category = "injection"; Name = "bb_det_evasion_injection_chain"; Define = "BKAES_SAMPLE_EVASION_INJECTION_CHAIN" },
     @{ Category = "injection"; Name = "bb_det_loadlibrary_module_notify"; Define = "BKAES_SAMPLE_LOADLIBRARY_MODULE_NOTIFY" },
     @{ Category = "injection"; Name = "bb_det_setwindows_hookex"; Define = "BKAES_SAMPLE_SETWINDOWS_HOOKEX" },
+    @{ Category = "injection"; Name = "bb_det_setwinevent_hook"; Define = "BKAES_SAMPLE_SETWINEVENT_HOOK" },
+    @{ Category = "injection"; Name = "bb_ok_gui_hook_target"; Define = "BKAES_SAMPLE_GUI_HOOK_TARGET" },
     @{ Category = "hollowing"; Name = "bb_det_hollowing_mark_chain"; Define = "BKAES_SAMPLE_HOLLOWING_MARK_CHAIN" },
     @{ Category = "hollowing"; Name = "bb_det_transacted_hollowing_marker"; Define = "BKAES_SAMPLE_TRANSACTED_HOLLOWING_MARKER" },
     @{ Category = "loader"; Name = "bb_det_post_process_init_prepatched"; Define = "BKAES_SAMPLE_POST_PROCESS_INIT_PREPATCHED"; EmbedPostProcessInitRoutine = $true },
