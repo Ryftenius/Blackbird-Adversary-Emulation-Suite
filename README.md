@@ -15,6 +15,7 @@ dual-use/offensive purpose.
 - `common/` - shared sample dispatcher and support code.
 - `apc/`, `beacon/`, `hollowing/`, `injection/`, `kerberos/`, `loader/`, `lotl/`, `lpe/`, `mem/`, `network/`, `process/`,
   `registry/`, `service/`, `sxs/`, `syscall/`, `benign/` - sample categories built by the category vcxprojs.
+- `benign_apps/` - cross-language normal-application corpus used to measure actionable false-positive noise.
 - `Scripts/` - public build and sample helper scripts.
 
 ## Build
@@ -33,6 +34,17 @@ To build a single sample category:
 ```powershell
 msbuild VCXProj\AES.Samples.Syscall.vcxproj /t:Build /p:Configuration=Release /p:Platform=x64
 ```
+
+To build the cross-language benign application corpus with locally installed toolchains:
+
+```powershell
+.\Scripts\Build-BenignApps.ps1 -AllowPartial
+```
+
+Omit `-AllowPartial` in validation environments where every required toolchain and UI runtime is installed. The
+script uses locked, offline Cargo builds and does not install or download dependencies. See
+`benign_apps/README.md` for the exercised behavior and use `manifests/benign-apps.json` with Blackbird's detection
+audit runner.
 
 The sample build script is `Build.ps1`. It can generate a local sample inventory from the suite build metadata;
 generated inventories are ignored by git.

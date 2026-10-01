@@ -18,6 +18,7 @@
 [Aa][Rr][Mm]64/
 obj/
 bin/
+target/
 ipch/
 *.obj
 *.iobj
@@ -42,6 +43,7 @@ ipch/
 *.map
 
 # Generated manifests
+/benign_apps/tauri_ui/src-tauri/gen/
 /manifests/*.generated.json
 
 # Local/editor noise
