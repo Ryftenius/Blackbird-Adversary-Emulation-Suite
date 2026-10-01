@@ -108,7 +108,7 @@ async fn main() {
         .duration_since(UNIX_EPOCH)
         .unwrap_or_default()
         .as_millis() as i64;
-    for endpoint in ["/", "/api/processes", "/api/history"] {
+    for endpoint in ["/", "/app.js", "/api/processes", "/api/history"] {
         connection
             .execute(
                 "INSERT INTO requests(endpoint, observed_ms) VALUES (?1, ?2)",
@@ -140,6 +140,16 @@ async fn main() {
             .await
     });
 
+    let index_response = tokio::task::spawn_blocking(move || http_get(address, "/"))
+        .await
+        .ok()
+        .and_then(Result::ok)
+        .unwrap_or_default();
+    let script_response = tokio::task::spawn_blocking(move || http_get(address, "/app.js"))
+        .await
+        .ok()
+        .and_then(Result::ok)
+        .unwrap_or_default();
     let process_response = tokio::task::spawn_blocking(move || http_get(address, "/api/processes"))
         .await
         .ok()
@@ -150,10 +160,18 @@ async fn main() {
         .ok()
         .and_then(Result::ok)
         .unwrap_or_default();
+    if !index_response.starts_with("HTTP/1.1 200")
+        || !index_response.contains("Normal Process Dashboard")
+    {
+        fail("frontend document self-test failed");
+    }
+    if !script_response.starts_with("HTTP/1.1 200") || !script_response.contains("Promise.all") {
+        fail("frontend script self-test failed");
+    }
     if !process_response.starts_with("HTTP/1.1 200") || !process_response.contains("\"pid\"") {
         fail("process endpoint self-test failed");
     }
-    if !history_response.starts_with("HTTP/1.1 200") || !history_response.contains("\"rows\":3") {
+    if !history_response.starts_with("HTTP/1.1 200") || !history_response.contains("\"rows\":4") {
         fail("sqlite endpoint self-test failed");
     }
 
@@ -168,7 +186,7 @@ async fn main() {
     }
     let _ = fs::remove_file(&db_path);
     let outcome = format!(
-        "[BKAES_OUTCOME] benign_rust_axum_ui=passed bind=loopback processes={} sqliteRows=3 frontend=bundled elapsedMs={}",
+        "[BKAES_OUTCOME] benign_rust_axum_ui=passed bind=loopback processes={} sqliteRows=4 frontend=served elapsedMs={}",
         process_count, started.elapsed().as_millis());
     audit("bkaes-protection-outcome.txt", &outcome);
     println!("{outcome}");
