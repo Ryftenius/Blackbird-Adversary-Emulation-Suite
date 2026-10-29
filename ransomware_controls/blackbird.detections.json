@@ -1,0 +1,439 @@
+{
+  "schema": 2,
+  "suite": "Ransomware guard synthetic fixtures",
+  "cases": [
+    {
+      "id": "ransomware-disabled",
+      "kind": "detection",
+      "source": {
+        "type": "binary",
+        "path": "ransomware_controls/bin/fixture.exe"
+      },
+      "launch": {
+        "args": [
+          "burst"
+        ],
+        "scanSeconds": 25,
+        "useKernelDriver": true,
+        "useUsermodeHooks": true
+      },
+      "expected": {
+        "required": [],
+        "forbidden": [
+          "RANSOMWARE_ENTROPY_BURST"
+        ]
+      }
+    },
+    {
+      "id": "ransomware-audit",
+      "kind": "detection",
+      "source": {
+        "type": "binary",
+        "path": "ransomware_controls/bin/fixture.exe"
+      },
+      "launch": {
+        "args": [
+          "burst"
+        ],
+        "scanSeconds": 25,
+        "useKernelDriver": true,
+        "useUsermodeHooks": true,
+        "volEnabled": true,
+        "volExpectedPolicyCount": 1,
+        "volPolicyBundle": {
+          "policies": [
+            {
+              "policyId": "ransomware-guard",
+              "ttlSeconds": 60,
+              "rules": [
+                {
+                  "action": "ransomwareGuard",
+                  "ransomware": {
+                    "mode": "audit",
+                    "windowMs": 1000,
+                    "minimumFiles": 4,
+                    "minimumWrites": 4,
+                    "minimumBytes": 4096,
+                    "minimumEntropyQ8": 1792,
+                    "minimumDeltaQ8": 512
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expected": {
+        "required": [
+          "RANSOMWARE_ENTROPY_BURST"
+        ]
+      }
+    },
+    {
+      "id": "ransomware-block",
+      "kind": "detection",
+      "source": {
+        "type": "binary",
+        "path": "ransomware_controls/bin/fixture.exe"
+      },
+      "launch": {
+        "args": [
+          "burst"
+        ],
+        "scanSeconds": 25,
+        "useKernelDriver": true,
+        "useUsermodeHooks": true,
+        "volEnabled": true,
+        "volExpectedPolicyCount": 1,
+        "volPolicyBundle": {
+          "policies": [
+            {
+              "policyId": "ransomware-guard",
+              "ttlSeconds": 60,
+              "rules": [
+                {
+                  "action": "ransomwareGuard",
+                  "ransomware": {
+                    "mode": "block",
+                    "windowMs": 1000,
+                    "minimumFiles": 4,
+                    "minimumWrites": 4,
+                    "minimumBytes": 4096,
+                    "minimumEntropyQ8": 1792,
+                    "minimumDeltaQ8": 512
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expected": {
+        "required": [
+          "RANSOMWARE_ENTROPY_BURST"
+        ]
+      }
+    },
+    {
+      "id": "ransomware-low",
+      "kind": "detection",
+      "source": {
+        "type": "binary",
+        "path": "ransomware_controls/bin/fixture.exe"
+      },
+      "launch": {
+        "args": [
+          "low"
+        ],
+        "scanSeconds": 25,
+        "useKernelDriver": true,
+        "useUsermodeHooks": true,
+        "volEnabled": true,
+        "volExpectedPolicyCount": 1,
+        "volPolicyBundle": {
+          "policies": [
+            {
+              "policyId": "ransomware-guard",
+              "ttlSeconds": 60,
+              "rules": [
+                {
+                  "action": "ransomwareGuard",
+                  "ransomware": {
+                    "mode": "block",
+                    "windowMs": 1000,
+                    "minimumFiles": 4,
+                    "minimumWrites": 4,
+                    "minimumBytes": 4096,
+                    "minimumEntropyQ8": 1792,
+                    "minimumDeltaQ8": 512
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expected": {
+        "required": [],
+        "forbidden": [
+          "RANSOMWARE_ENTROPY_BURST"
+        ]
+      }
+    },
+    {
+      "id": "ransomware-already-high",
+      "kind": "detection",
+      "source": {
+        "type": "binary",
+        "path": "ransomware_controls/bin/fixture.exe"
+      },
+      "launch": {
+        "args": [
+          "already-high"
+        ],
+        "scanSeconds": 25,
+        "useKernelDriver": true,
+        "useUsermodeHooks": true,
+        "volEnabled": true,
+        "volExpectedPolicyCount": 1,
+        "volPolicyBundle": {
+          "policies": [
+            {
+              "policyId": "ransomware-guard",
+              "ttlSeconds": 60,
+              "rules": [
+                {
+                  "action": "ransomwareGuard",
+                  "ransomware": {
+                    "mode": "block",
+                    "windowMs": 1000,
+                    "minimumFiles": 4,
+                    "minimumWrites": 4,
+                    "minimumBytes": 4096,
+                    "minimumEntropyQ8": 1792,
+                    "minimumDeltaQ8": 512
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expected": {
+        "required": [],
+        "forbidden": [
+          "RANSOMWARE_ENTROPY_BURST"
+        ]
+      }
+    },
+    {
+      "id": "ransomware-single-file",
+      "kind": "detection",
+      "source": {
+        "type": "binary",
+        "path": "ransomware_controls/bin/fixture.exe"
+      },
+      "launch": {
+        "args": [
+          "single-file"
+        ],
+        "scanSeconds": 25,
+        "useKernelDriver": true,
+        "useUsermodeHooks": true,
+        "volEnabled": true,
+        "volExpectedPolicyCount": 1,
+        "volPolicyBundle": {
+          "policies": [
+            {
+              "policyId": "ransomware-guard",
+              "ttlSeconds": 60,
+              "rules": [
+                {
+                  "action": "ransomwareGuard",
+                  "ransomware": {
+                    "mode": "block",
+                    "windowMs": 1000,
+                    "minimumFiles": 4,
+                    "minimumWrites": 4,
+                    "minimumBytes": 4096,
+                    "minimumEntropyQ8": 1792,
+                    "minimumDeltaQ8": 512
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expected": {
+        "required": [],
+        "forbidden": [
+          "RANSOMWARE_ENTROPY_BURST"
+        ]
+      }
+    },
+    {
+      "id": "ransomware-slow",
+      "kind": "detection",
+      "source": {
+        "type": "binary",
+        "path": "ransomware_controls/bin/fixture.exe"
+      },
+      "launch": {
+        "args": [
+          "slow"
+        ],
+        "scanSeconds": 45,
+        "useKernelDriver": true,
+        "useUsermodeHooks": true,
+        "volEnabled": true,
+        "volExpectedPolicyCount": 1,
+        "volPolicyBundle": {
+          "policies": [
+            {
+              "policyId": "ransomware-guard",
+              "ttlSeconds": 60,
+              "rules": [
+                {
+                  "action": "ransomwareGuard",
+                  "ransomware": {
+                    "mode": "block",
+                    "windowMs": 1000,
+                    "minimumFiles": 4,
+                    "minimumWrites": 4,
+                    "minimumBytes": 4096,
+                    "minimumEntropyQ8": 1792,
+                    "minimumDeltaQ8": 512
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expected": {
+        "required": [],
+        "forbidden": [
+          "RANSOMWARE_ENTROPY_BURST"
+        ]
+      }
+    },
+    {
+      "id": "ransomware-failed-write",
+      "kind": "detection",
+      "source": {
+        "type": "binary",
+        "path": "ransomware_controls/bin/fixture.exe"
+      },
+      "launch": {
+        "args": [
+          "failed-write"
+        ],
+        "scanSeconds": 25,
+        "useKernelDriver": true,
+        "useUsermodeHooks": true,
+        "volEnabled": true,
+        "volExpectedPolicyCount": 1,
+        "volPolicyBundle": {
+          "policies": [
+            {
+              "policyId": "ransomware-guard",
+              "ttlSeconds": 60,
+              "rules": [
+                {
+                  "action": "ransomwareGuard",
+                  "ransomware": {
+                    "mode": "block",
+                    "windowMs": 1000,
+                    "minimumFiles": 4,
+                    "minimumWrites": 4,
+                    "minimumBytes": 4096,
+                    "minimumEntropyQ8": 1792,
+                    "minimumDeltaQ8": 512
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expected": {
+        "required": [],
+        "forbidden": [
+          "RANSOMWARE_ENTROPY_BURST"
+        ]
+      }
+    },
+    {
+      "id": "ransomware-expiry",
+      "kind": "detection",
+      "source": {
+        "type": "binary",
+        "path": "ransomware_controls/bin/fixture.exe"
+      },
+      "launch": {
+        "args": [
+          "burst"
+        ],
+        "scanSeconds": 25,
+        "useKernelDriver": true,
+        "useUsermodeHooks": true,
+        "volEnabled": true,
+        "volExpectedPolicyCount": 0,
+        "volPolicyBundle": {
+          "policies": [
+            {
+              "policyId": "ransomware-guard",
+              "ttlSeconds": 5,
+              "rules": [
+                {
+                  "action": "ransomwareGuard",
+                  "ransomware": {
+                    "mode": "block",
+                    "windowMs": 1000,
+                    "minimumFiles": 4,
+                    "minimumWrites": 4,
+                    "minimumBytes": 4096,
+                    "minimumEntropyQ8": 1792,
+                    "minimumDeltaQ8": 512
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expected": {
+        "required": [],
+        "forbidden": [
+          "RANSOMWARE_ENTROPY_BURST"
+        ]
+      }
+    },
+    {
+      "id": "ransomware-tuned-two",
+      "kind": "detection",
+      "source": {
+        "type": "binary",
+        "path": "ransomware_controls/bin/fixture.exe"
+      },
+      "launch": {
+        "args": [
+          "burst"
+        ],
+        "scanSeconds": 25,
+        "useKernelDriver": true,
+        "useUsermodeHooks": true,
+        "volEnabled": true,
+        "volExpectedPolicyCount": 1,
+        "volPolicyBundle": {
+          "policies": [
+            {
+              "policyId": "ransomware-guard",
+              "ttlSeconds": 60,
+              "rules": [
+                {
+                  "action": "ransomwareGuard",
+                  "ransomware": {
+                    "mode": "block",
+                    "windowMs": 1000,
+                    "minimumFiles": 2,
+                    "minimumWrites": 2,
+                    "minimumBytes": 2048,
+                    "minimumEntropyQ8": 1792,
+                    "minimumDeltaQ8": 512
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expected": {
+        "required": [
+          "RANSOMWARE_ENTROPY_BURST"
+        ]
+      }
+    }
+  ]
+}
